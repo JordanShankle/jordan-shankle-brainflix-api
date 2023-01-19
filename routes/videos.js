@@ -1,16 +1,38 @@
-// Import uuid
-const { v4 } = require("uuid");
-
 // initialize Express
 const express = require('express');
-
-// initialize Express Router
 const router = express.Router();
-
-// Initialize fs
 const fs = require('fs');
+const { v4: uuid } = require("uuid");
+const videos = require("../data/videos.json");
+
+////////////////////////////////
 
 
+// GET All Videos response
+router.get("/", (req, res) => {
+    const videos = getVideos();
+    res.json(videos);
+});
+
+
+
+
+// GET video ID response
+router.get("/:id", (req, res) => {
+    const videos = getVideos();
+    
+    const selectedVideo = req.id;
+    
+    if (selectedVideo) {
+        const findVideo = videos.find((video) => video.id === selectedVideo);
+        res.json(findVideo);
+    } else {
+        res.json(videos);
+    }   
+})
+
+
+// POST Response
 router
     .post("/", (req, res) => {
 
@@ -62,6 +84,7 @@ router
             videos.push(newVideo);
         }
         
+
         // Error handling
         fs.writeFile("./data/videos.json", JSON.stringify(videos), (err) => {
             if (err) {
@@ -83,6 +106,5 @@ function getVideos() {
     return JSON.parse(videosFromFile);
 }
 
-console.log(getVideos)
 
 module.exports = router;
