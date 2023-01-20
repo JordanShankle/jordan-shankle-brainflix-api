@@ -6,24 +6,18 @@ const fs = require('fs');
 // const { v4: uuid  } = require("uuid");
 const PORT = process.env.PORT;
 const cors = require("cors");
-app.use(cors({ origin: process.env.ALLOWED_ORIGIN }))
+app.use(cors())
 app.use(express.json());
 
 
-
-
-
+// Routes
 const videoRoutes = require('./routes/videos')
 app.use("/videos", videoRoutes);
-// app.use("/videos/:videosId", commentsRoute);
 
 
+// For Images
+app.use("/image", express.static("images"));
     
-// Function that reads the initial JSON file & parses the data
-function getVideos() {
-    const videosFromFile = fs.readFileSync("./data/videos.json");
-    return JSON.parse(videosFromFile);
-}
     
     
 // Have to .listen to get the Server running

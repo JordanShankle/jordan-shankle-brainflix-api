@@ -9,7 +9,9 @@ const videos = require("../data/videos.json");
 
 
 // GET All Videos response
-router.get("/", (req, res) => {
+router
+    .route("/")
+    .get((req, res) => {
     const videos = getVideos();
     res.json(videos);
 });
@@ -18,18 +20,25 @@ router.get("/", (req, res) => {
 
 
 // GET video ID response
-router.get("/:id", (req, res) => {
+router
+    .route("/:id")
+    .get((req, res, next) => {
+    
     const videos = getVideos();
+    const selectedVideoId = req.params.id;
     
-    const selectedVideo = req.id;
     
-    if (selectedVideo) {
-        const findVideo = videos.find((video) => video.id === selectedVideo);
+    if (selectedVideoId) {
+        const findVideo = videos.find((video) => video.id === selectedVideoId);
         res.json(findVideo);
     } else {
         res.json(videos);
-    }   
-})
+    }
+    
+    next();
+});
+
+
 
 
 // POST Response
@@ -40,7 +49,6 @@ router
         const title = req.body.tile;
         const description = req.body.description;
 
-        // const { title, description } = req.body;
 
         if (!title || !description) {
             return res.status(400).send('Please provide information.');
@@ -86,8 +94,8 @@ router
         
 
         // Error handling
-        fs.writeFile("./data/videos.json", JSON.stringify(videos), (err) => {
-            if (err) {
+        fs.writeFile("./data/videos.json", JSON.stringify(videos), (error) => {
+            if (error) {
                 return res.status(500).json({
                     error: true,
                     message: "There was an error saving the posted video, please try again.",
