@@ -16,7 +16,7 @@ app.use("/videos", videoRoutes);
 
 
 // For Images
-app.use("/image", express.static("images"));
+app.use(express.static("public"));
     
     
     

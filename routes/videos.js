@@ -46,9 +46,9 @@ router
     .post("/", (req, res) => {
 
         const videos = getVideos();
-        const title = req.body.tile;
-        const description = req.body.description;
-
+        // const title = req.body.tile;
+        // const description = req.body.description;
+        const { title, description } = req.body
 
         if (!title || !description) {
             return res.status(400).send('Please provide information.');
@@ -57,7 +57,7 @@ router
                 id: uuid(),
                 title: title,
                 channel: "Jordan",
-                image: "http://localhost:8080/",
+                image: "http://localhost:8080/images/image0.jpeg",
                 description: description,
                 views: 9876543,
                 likes: 123456,
@@ -88,22 +88,25 @@ router
                     }
                 ]
             }
+            videos.push(newVideo)
+            console.log(newVideo)
 
-            videos.push(newVideo);
+            fs.writeFileSync("./data/videos.json", JSON.stringify(videos));
+            res.status(201).send("Video uploaded.");
         }
         
 
         // Error handling
-        fs.writeFile("./data/videos.json", JSON.stringify(videos), (error) => {
-            if (error) {
-                return res.status(500).json({
-                    error: true,
-                    message: "There was an error saving the posted video, please try again.",
-                });
-            }
+        // fs.writeFile("./data/videos.json", JSON.stringify(videos), (error) => {
+        //     if (error) {
+        //         return res.status(500).json({
+        //             error: true,
+        //             message: "There was an error saving the posted video, please try again.",
+        //         });
+        //     }
 
-            res.status(201).json(newVideo);
-        });
+        //     res.status(201).json(newVideo);
+        // });
 
     });
 
