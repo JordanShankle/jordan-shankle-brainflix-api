@@ -5,8 +5,6 @@ const fs = require('fs');
 const { v4: uuid } = require("uuid");
 const videos = require("../data/videos.json");
 
-////////////////////////////////
-
 
 // GET All Videos response
 router
@@ -46,8 +44,7 @@ router
     .post("/", (req, res) => {
 
         const videos = getVideos();
-        // const title = req.body.tile;
-        // const description = req.body.description;
+    
         const { title, description } = req.body
 
         if (!title || !description) {
@@ -97,16 +94,16 @@ router
         
 
         // Error handling
-        // fs.writeFile("./data/videos.json", JSON.stringify(videos), (error) => {
-        //     if (error) {
-        //         return res.status(500).json({
-        //             error: true,
-        //             message: "There was an error saving the posted video, please try again.",
-        //         });
-        //     }
+        fs.writeFile("./data/videos.json", JSON.stringify(videos), (error) => {
+            if (error) {
+                return res.status(500).json({
+                    error: true,
+                    message: "There was an error saving the posted video, please try again.",
+                });
+            }
 
-        //     res.status(201).json(newVideo);
-        // });
+            res.status(201).json(newVideo);
+        });
 
     });
 

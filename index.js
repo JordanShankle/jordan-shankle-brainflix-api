@@ -3,7 +3,6 @@ const express = require('express');
 const app = express();
 require("dotenv").config("./routes/videos.js")
 const fs = require('fs');
-// const { v4: uuid  } = require("uuid");
 const PORT = process.env.PORT;
 const cors = require("cors");
 app.use(cors())
